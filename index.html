@@ -177,17 +177,17 @@
 
         // Enable the Sign In button now that a role has been selected
         signinButton.disabled = false;
-
-        console.log(Role selected: ${ selectedRole });
+        C
+        console.log('Role selected: ${ selectedRole }');
       });
-    });
+    }); C
 
     // Add a click event listener to the Sign In button
     signinButton.addEventListener('click', () => {
       // Check if a role has been selected before proceeding
       if (selectedRole) {
         // In a real application, this would trigger the authentication flow
-        console.log(Proceeding to sign in as: ${ selectedRole });
+        console.log('Proceeding to sign in as: ${ selectedRole }');
         // NOTE: Using a custom modal/message box is better than alert() in a real app.
         // For this demonstration, we'll keep the console log.
       } else {
