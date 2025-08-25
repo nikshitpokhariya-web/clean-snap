@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Details - Clean City Initiative</title>
+  <!-- Tailwind CSS for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Applying the Inter font family to the body */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Using the same custom gradient for consistency */
+    .bg-custom-gradient {
+      background-image: linear-gradient(to bottom, #FDBF68, #EAF2E2, #A8D8B9);
+    }
+  </style>
+</head>
+
+<body class="bg-custom-gradient">
+
+  <div class="relative min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-md z-10 bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-lg">
+
+      <!-- Heading -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Citizen Information</h1>
+        <p class="text-gray-600 mt-2">Please complete your profile.</p>
+      </div>
+
+      <!-- Citizen Details Form -->
+      <form id="citizen-form" class="space-y-6">
+        <!-- Full Name Input -->
+        <div>
+          <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <input type="text" name="full-name" id="full-name"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A]"
+            placeholder="Enter your full name" required>
+        </div>
+
+        <!-- Phone Number Input -->
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <input type="tel" name="phone" id="phone" pattern="[0-9]{10}" title="Phone number must be 10 digits"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A]"
+            placeholder="Enter your 10-digit phone number" required>
+        </div>
+
+        <!-- Gender Selection -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+          <div class="flex items-center space-x-6">
+            <label class="flex items-center">
+              <input type="radio" name="gender" value="male"
+                class="h-4 w-4 text-[#26A69A] focus:ring-[#26A69A] border-gray-300">
+              <span class="ml-2 text-gray-700">Male</span>
+            </label>
+            <label class="flex items-center">
+              <input type="radio" name="gender" value="female"
+                class="h-4 w-4 text-[#26A69A] focus:ring-[#26A69A] border-gray-300">
+              <span class="ml-2 text-gray-700">Female</span>
+            </label>
+            <label class="flex items-center">
+              <input type="radio" name="gender" value="other"
+                class="h-4 w-4 text-[#26A69A] focus:ring-[#26A69A] border-gray-300">
+              <span class="ml-2 text-gray-700">Other</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4">
+          <button type="submit"
+            class="w-full bg-[#26A69A] text-white py-3 rounded-lg shadow-md hover:bg-[#208a7f] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-offset-2 text-lg font-semibold">
+            Submit Details
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Handle form submission
+    const citizenForm = document.getElementById('citizen-form');
+    citizenForm.addEventListener('submit', (event) => {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+      // In a real application, you would send this data to a server.
+      // For this demonstration, we'll just log the data to the console.
+      const formData = new FormData(citizenForm);
+      const citizenData = Object.fromEntries(formData.entries());
+
+      console.log('Citizen Details Submitted:', citizenData);
+      alert('Thank you! Your details have been submitted.');
+
+      // Optionally, redirect the user to a dashboard or home page
+      // window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+
+</html>
