@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Multi-Entity Dashboard — Municipality · NGO · Person</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #fff;
+      --accent: #0b63d4;
+      --muted: #6b7280;
+      --success: #10b981;
+      --danger: #ef4444;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin: 0;
+      background: var(--bg);
+      color: #0f172a;
+    }
+
+    .wrap {
+      display: flex;
+      min-height: 100vh;
+      gap: 24px;
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      flex: 0 0 240px
+    }
+
+    .brand {
+      background: linear-gradient(90deg, #0b63d4, #0366b3);
+      color: #fff;
+      padding: 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center
+    }
+
+    .menu {
+      margin-top: 16px
+    }
+
+    .menu button {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: 0;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(11, 99, 212, 0.06)
+    }
+
+    .menu button.active {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .menu small {
+      display: block;
+      color: var(--muted);
+      margin-top: 6px
+    }
+
+    /* Main */
+    .main {
+      flex: 1
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px
+    }
+
+    .card {
+      background: var(--card);
+      padding: 18px;
+      border-radius: var(--radius);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06)
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .search {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #e6edf8;
+      min-width: 220px
+    }
+
+    select,
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e6edf8
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(11, 99, 212, 0.12)
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 18px
+    }
+
+    .table-wrap {
+      overflow: auto
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      background: transparent;
+      position: sticky;
+      top: 0
+    }
+
+    tbody tr:hover {
+      background: #f8fbff
+    }
+
+    .status {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-block
+    }
+
+    .status.open {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--success)
+    }
+
+    .status.pending {
+      background: rgba(250, 204, 21, 0.12);
+      color: #b45309
+    }
+
+    .status.closed {
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--danger)
+    }
+
+    /* Form */
+    .form-row {
+      display: flex;
+      gap: 8px
+    }
+
+    .form-row .col {
+      flex: 1
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 86px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e6edf8;
+      resize: vertical
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    /* Responsive */
+    @media (max-width:960px) {
+      .wrap {
+        padding: 14px
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        align-items: start
+      }
+
+      .sidebar {
+        display: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">Project Dashboard</div>
+      <div class="menu card" style="margin-top:16px">
+        <button class="tab-btn active" data-type="municipality">Municipality</button>
+        <button class="tab-btn" data-type="ngo">NGO</button>
+        <button class="tab-btn" data-type="person">Local Person</button>
+        <div style="margin-top:12px">
+          <small class="small">Current view: <strong id="currentView">Municipality</strong></small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <div class="topbar">
+        <div style="display:flex;gap:12px;align-items:center">
+          <h1 style="margin:0;font-size:20px">Entity Dashboard</h1>
+          <div class="small">Manage reports and status for different stakeholders</div>
+        </div>
+
+        <div class="controls">
+          <input id="searchInput" class="search" placeholder="Search name or report..." />
+          <select id="statusFilter" style="padding:10px;border-radius:8px;border:1px solid #e6edf8">
+            <option value="">All statuses</option>
+            <option value="Open">Open</option>
+            <option value="Pending">Pending</option>
+            <option value="Closed">Closed</option>
+          </select>
+          <button class="btn ghost" id="exportBtn">Export JSON</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- Left: Table -->
+        <section>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div>
+                <strong id="tableTitle">Municipality Reports</strong>
+                <div class="small">Records for selected entity</div>
+              </div>
+              <div>
+                <button class="btn" id="openAdd">+ Add New</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table id="dataTable">
+                <thead>
+                  <tr>
+                    <th style="width:200px">Name</th>
+                    <th>Report</th>
+                    <th style="width:110px">Status</th>
+                    <th style="width:140px">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                  <!-- rows inserted here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Form / Details -->
+        <aside>
+          <div class="card" id="formCard">
+            <h3 id="formTitle">Add Record</h3>
+
+            <div style="margin-top:6px" class="small">Fill details for <strong id="formEntity">Municipality</strong>
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="small">Entity</label>
+              <select id="entitySelect" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6edf8">
+                <option value="municipality">Municipality</option>
+                <option value="ngo">NGO</option>
+                <option value="person">Local Person</option>
+              </select>
+
+              <label class="small" style="margin-top:8px">Name</label>
+              <input id="nameInput" type="text" placeholder="Name (e.g. John Doe / NGO Name)" />
+
+              <label class="small" style="margin-top:8px">Report</label>
+              <textarea id="reportInput" placeholder="Write the report / description"></textarea>
+
+              <label class="small" style="margin-top:8px">Status</label>
+              <select id="statusInput">
+                <option value="Open">Open</option>
+                <option value="Pending">Pending</option>
+                <option value="Closed">Closed</option>
+              </select>
+
+              <div class="actions">
+                <button class="btn" id="saveBtn">Save</button>
+                <button class="btn ghost" id="cancelBtn">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4>Details</h4>
+            <div id="detailBox" class="small">Select a row to see details here.</div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /***************
+     * Simple client-side dashboard
+     * - Maintains data per entity (municipality / ngo / person)
+     * - Add / Edit / Delete rows
+     * - Filter & search in current view
+     * - Export JSON of current view
+     ***************/
+
+    // Seed sample data
+    const store = {
+      municipality: [
+        { id: id(), name: "Central Water Dept", report: "Pipe leak at Sector 5. Needs urgent repair.", status: "Open" },
+        { id: id(), name: "Roads Authority", report: "Potholes on Main St — scheduled patching.", status: "Pending" },
+      ],
+      ngo: [
+        { id: id(), name: "GreenEarth NGO", report: "Community clean-up last Sunday. Good turnout.", status: "Closed" },
+      ],
+      person: [
+        { id: id(), name: "Ravi Kumar", report: "Reported stray dog issue near park.", status: "Open" },
+      ]
+    };
+
+    // DOM refs
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const currentViewLabel = document.getElementById("currentView");
+    const tableTitle = document.getElementById("tableTitle");
+    const formEntityLabel = document.getElementById("formEntity");
+    const entitySelect = document.getElementById("entitySelect");
+    const tableBody = document.getElementById("tableBody");
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+    const openAddBtn = document.getElementById("openAdd");
+    const formCard = document.getElementById("formCard");
+    const formTitle = document.getElementById("formTitle");
+    const nameInput = document.getElementById("nameInput");
+    const reportInput = document.getElementById("reportInput");
+    const statusInput = document.getElementById("statusInput");
+    const saveBtn = document.getElementById("saveBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const detailBox = document.getElementById("detailBox");
+
+    let currentType = "municipality";
+    let editId = null;
+
+    // Utility: generate id
+    function id() { return 'id_' + Math.random().toString(36).slice(2, 9); }
+
+    // Initial render
+    renderTable();
+
+    // Tab switching
+    tabBtns.forEach(b => {
+      b.addEventListener('click', () => {
+        tabBtns.forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        currentType = b.dataset.type;
+        currentViewLabel.textContent = capitalize(currentType);
+        tableTitle.textContent = capitalize(currentType) + " Reports";
+        entitySelect.value = currentType;
+        formEntityLabel.textContent = capitalize(currentType);
+        clearForm();
+        renderTable();
+      });
+    });
+
+    // Filters
+    searchInput.addEventListener('input', renderTable);
+    statusFilter.addEventListener('change', renderTable);
+
+    // Export
+    exportBtn.addEventListener('click', () => {
+      const data = store[currentType];
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `${currentType}_export.json`; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Add new
+    openAddBtn.addEventListener('click', () => {
+      editId = null;
+      formTitle.textContent = "Add Record";
+      formCard.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Cancel
+    cancelBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearForm();
+    });
+
+    // Save (Add or Edit)
+    saveBtn.addEventListener('click', () => {
+      const ent = entitySelect.value;
+      const name = nameInput.value.trim();
+      const report = reportInput.value.trim();
+      const status = statusInput.value;
+      if (!name || !report) {
+        alert('Please fill both Name and Report.');
+        return;
+      }
+
+      if (editId) {
+        // update
+        const list = store[ent];
+        const idx = list.findIndex(x => x.id === editId);
+        if (idx >= 0) {
+          list[idx].name = name;
+          list[idx].report = report;
+          list[idx].status = status;
+        }
+        // if changed entity type, move record
+        if (ent !== currentType) {
+          const moved = list.splice(idx, 1)[0];
+          store[currentType].push(moved);
+        }
+      } else {
+        // add
+        const newRec = { id: id(), name, report, status };
+        store[ent].unshift(newRec);
+      }
+
+      clearForm();
+      renderTable();
+    });
+
+    // Render current table
+    function renderTable() {
+      const q = searchInput.value.trim().toLowerCase();
+      const sf = statusFilter.value;
+      const rows = store[currentType].filter(r => {
+        const matchQ = !q || (r.name + ' ' + r.report).toLowerCase().includes(q);
+        const matchS = !sf || r.status === sf;
+        return matchQ && matchS;
+      });
+
+      tableBody.innerHTML = '';
+      if (rows.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4" style="padding:18px;color:var(--muted)">No records found.</td></tr>';
+        return;
+      }
+
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(r.name)}</strong></td>
+          <td>${escapeHtml(shorten(r.report, 160))}</td>
+          <td><span class="status ${statusClass(r.status)}">${r.status}</span></td>
+          <td>
+            <button class="btn ghost" data-action="view" data-id="${r.id}" style="margin-right:6px">View</button>
+            <button class="btn" data-action="edit" data-id="${r.id}" style="margin-right:6px">Edit</button>
+            <button class="btn ghost" data-action="delete" data-id="${r.id}">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Attach actions
+      tableBody.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const action = btn.dataset.action;
+          const rid = btn.dataset.id;
+          if (action === 'view') return viewRecord(rid);
+          if (action === 'edit') return editRecord(rid);
+          if (action === 'delete') return deleteRecord(rid);
+        });
+      });
+    }
+
+    // View
+    function viewRecord(rid) {
+      const rec = store[currentType].find(r => r.id === rid);
+      if (!rec) return;
+      detailBox.innerHTML = `
+        <strong>${escapeHtml(rec.name)}</strong><br/><br/>
+        <div style="color:var(--muted)">${escapeHtml(rec.report)}</div>
+        <div style="margin-top:8px">Status: <span class="status ${statusClass(rec.status)}">${rec.status}</span></div>
+      `;
+      detailBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Edit
+    function editRecord(rid) {
+      const rec = store[currentType].find(r => r.id === rid);
+      if (!rec) return;
+      editId = rec.id;
+      formTitle.textContent = "Edit Record";
+      nameInput.value = rec.name;
+      reportInput.value = rec.report;
+      statusInput.value = rec.status;
+      entitySelect.value = currentType;
+      formCard.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Delete
+    function deleteRecord(rid) {
+      if (!confirm('Delete this record?')) return;
+      const idx = store[currentType].findIndex(r => r.id === rid);
+      if (idx >= 0) store[currentType].splice(idx, 1);
+      renderTable();
+    }
+
+    // Helpers
+    function clearForm() {
+      editId = null;
+      formTitle.textContent = "Add Record";
+      nameInput.value = '';
+      reportInput.value = '';
+      statusInput.value = 'Open';
+      entitySelect.value = currentType;
+    }
+    function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+    function shorten(text, n = 120) { return text.length > n ? escapeHtml(text.slice(0, n)) + '...' : escapeHtml(text); }
+    function statusClass(s) {
+      return s.toLowerCase() === 'open' ? 'open' : (s.toLowerCase() === 'pending' ? 'pending' : 'closed');
+    }
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (m) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]; });
+    }
+  </script>
+</body>
+
+</html>
