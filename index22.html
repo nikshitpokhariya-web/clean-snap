@@ -32,6 +32,7 @@
 <body class="bg-custom-gradient">
 
   <div class="relative min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- Main Sign Up Card -->
     <div class="w-full max-w-sm z-10 bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-lg">
       <div class="text-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Create Account</h1>
@@ -68,9 +69,12 @@
     </div>
   </div>
 
+  <!-- FAKE GOOGLE SIGN-IN MODAL -->
   <div id="google-fake-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <!-- Modal content -->
     <div id="google-modal-content"
       class="google-modal-font bg-white w-full max-w-sm rounded-lg border border-gray-300 shadow-xl">
+      <!-- Header -->
       <div class="text-center p-6 border-b">
         <svg class="w-8 h-8 mx-auto mb-4" viewBox="0 0 48 48">
           <path fill="#4285F4"
@@ -89,8 +93,10 @@
         <h2 class="text-xl text-gray-800">Choose an account</h2>
         <p class="text-sm text-gray-500 mt-1">to continue to Clean City Initiative</p>
       </div>
+      <!-- Accounts List -->
       <div class="p-2">
         <ul>
+          <!-- Fake Account 1 -->
           <li class="fake-account-btn p-3 flex items-center space-x-4 rounded-md hover:bg-gray-100 cursor-pointer">
             <div
               class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-lg">
@@ -100,6 +106,7 @@
               <p class="text-xs text-gray-500">priya.verma.demo@gmail.com</p>
             </div>
           </li>
+          <!-- Fake Account 2 -->
           <li class="fake-account-btn p-3 flex items-center space-x-4 rounded-md hover:bg-gray-100 cursor-pointer">
             <div
               class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">R
@@ -109,6 +116,7 @@
               <p class="text-xs text-gray-500">rohan.sharma.test@gmail.com</p>
             </div>
           </li>
+          <!-- Use another account -->
           <li class="fake-account-btn p-3 flex items-center space-x-4 rounded-md hover:bg-gray-100 cursor-pointer">
             <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center">
               <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -123,6 +131,7 @@
           </li>
         </ul>
       </div>
+      <!-- Footer -->
       <div class="text-center p-4 text-xs text-gray-500 border-t">
         To continue, Google will share your name, email address, and profile picture with Clean City Initiative.
       </div>
@@ -159,9 +168,9 @@
     // Add a click listener to each fake account option
     fakeAccountBtns.forEach(button => {
       button.addEventListener('click', () => {
-        console.log('Fake account selected, redirecting to index6.html...');
-        // Redirect to the desired page after "signing in"
-        window.location.href = 'index6.html';
+        console.log('Fake account selected, redirecting to index7.html...');
+        // *** THIS IS THE ONLY LINE THAT WAS CHANGED ***
+        window.location.href = 'index7.html';
       });
     });
   </script>

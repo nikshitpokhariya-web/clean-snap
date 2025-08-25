@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipality Dashboard - Clean City Initiative</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Applying the Inter font family */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      scroll-behavior: smooth;
+    }
+
+    /* Styles for the status badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .status-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    /* Color schemes for different statuses */
+    .status-pending {
+      background-color: #FEF3C7;
+      color: #92400E;
+    }
+
+    .status-pending .status-dot {
+      background-color: #FBBF24;
+    }
+
+    .status-in-process {
+      background-color: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .status-in-process .status-dot {
+      background-color: #60A5FA;
+    }
+
+    .status-completed {
+      background-color: #D1FAE5;
+      color: #065F46;
+    }
+
+    .status-completed .status-dot {
+      background-color: #34D399;
+    }
+
+    /* Style for active filter card */
+    .filter-card-active {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-color: #4f46e5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="municipality-section"
+    class="min-h-screen bg-gray-900 text-white flex flex-col p-4 sm:p-8 relative bg-cover bg-center overflow-hidden"
+    style="background-image: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 1)), url('https://placehold.co/1920x1080/1a202c/4a5568?text=City+Operations');">
+    <header class="w-full max-w-7xl mx-auto flex justify-between items-center">
+      <h2 class="text-xl font-bold tracking-wider uppercase">Municipal Command</h2>
+      <div>
+        <a href="login.html" class="text-sm text-gray-300 hover:text-white">Sign Out</a>
+      </div>
+    </header>
+
+    <div class="flex-grow flex items-center justify-center">
+      <div class="w-full max-w-4xl mx-auto text-center">
+
+        <div class="bg-black/30 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-gray-700">
+          <div id="user-welcome">
+            <h1 class="text-4xl md:text-5xl font-bold">Welcome</h1>
+            <p class="mt-2 text-lg text-gray-300">City-Wide Operational Overview</p>
+          </div>
+
+          <div class="my-12 flex items-center justify-around max-w-lg mx-auto bg-gray-800/50 p-4 rounded-lg">
+            <div data-filter="Pending" data-title="Pending Reports"
+              class="municipal-filter cursor-pointer p-2 rounded-md hover:bg-gray-700 transition-colors">
+              <h4 class="font-semibold text-yellow-300">Pending</h4>
+              <p id="total-pending-count" class="text-4xl font-bold mt-1">0</p>
+            </div>
+            <div data-filter="In Process" data-title="In Process Reports"
+              class="municipal-filter cursor-pointer p-2 rounded-md hover:bg-gray-700 transition-colors">
+              <h4 class="font-semibold text-blue-300">In Process</h4>
+              <p id="total-in-process-count" class="text-4xl font-bold mt-1">0</p>
+            </div>
+            <div data-filter="Completed" data-title="Completed Reports"
+              class="municipal-filter cursor-pointer p-2 rounded-md hover:bg-gray-700 transition-colors">
+              <h4 class="font-semibold text-green-300">Completed</h4>
+              <p id="total-completed-count" class="text-4xl font-bold mt-1">0</p>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <a href="index4.html" id="view-new-issues-btn"
+              class="bg-yellow-500 hover:bg-yellow-600 transition-all duration-300 text-gray-900 p-6 rounded-lg w-full max-w-md mx-auto flex flex-col justify-center items-center text-2xl font-bold shadow-lg hover:shadow-2xl transform hover:scale-105">
+              <span>View New Issues</span>
+              <span class="text-sm font-normal mt-1">Focus on Pending Reports</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="municipal-reports-modal"
+      class="hidden absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <div class="bg-gray-800 border border-gray-700 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+        <div class="flex justify-between items-center p-4 border-b border-gray-700">
+          <h3 id="modal-title" class="text-xl font-bold">Reports</h3>
+          <button id="close-modal-btn" class="text-gray-400 hover:text-white text-3xl leading-none">×</button>
+        </div>
+        <div class="overflow-y-auto p-4">
+          <table class="min-w-full text-left">
+            <thead class="text-xs text-gray-400 uppercase">
+              <tr>
+                <th class="py-2 px-4">Location</th>
+                <th class="py-2 px-4">Date</th>
+                <th class="py-2 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="municipal-reports-table-body" class="divide-y divide-gray-700">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="public-dashboard-section" class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900">City-Wide Operations</h1>
+      <p class="mt-2 text-gray-600">Live status of all reported issues across the city.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div id="filter-all" data-filter="All" data-title="All Reported Issues"
+        class="filter-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300 filter-card-active">
+        <h3 class="text-gray-500 font-semibold">All Reports</h3>
+        <p id="count-all" class="text-3xl font-bold text-gray-900 mt-2">0</p>
+      </div>
+      <div id="filter-pending" data-filter="Pending" data-title="Pending Reports"
+        class="filter-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+        <h3 class="text-yellow-600 font-semibold">Pending</h3>
+        <p id="count-pending" class="text-3xl font-bold text-yellow-500 mt-2">0</p>
+      </div>
+      <div id="filter-in-process" data-filter="In Process" data-title="In Process Reports"
+        class="filter-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+        <h3 class="text-blue-600 font-semibold">In Process</h3>
+        <p id="count-in-process" class="text-3xl font-bold text-blue-500 mt-2">0</p>
+      </div>
+      <div id="filter-completed" data-filter="Completed" data-title="Completed Reports"
+        class="filter-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent cursor-pointer transition-all duration-300">
+        <h3 class="text-green-600 font-semibold">Completed</h3>
+        <p id="count-completed" class="text-3xl font-bold text-green-500 mt-2">0</p>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 id="table-title" class="text-xl font-semibold text-gray-700 mb-4">All Reported Issues</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Location</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date Reported</th>
+              <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Map</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status</th>
+            </tr>
+          </thead>
+          <tbody id="issues-table-body" class="bg-white divide-y divide-gray-200">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- MOCK DATABASE ---
+    const allIssuesData = [
+      { id: 1, userId: 1, location: 'Near City Park, Sector 12', dateTime: '2025-08-25 09:15 AM', mapLink: 'https://maps.google.com/?q=28.6139,77.2090', status: 'Pending' },
+      { id: 2, userId: 2, location: 'Main Market, Opposite Post Office', dateTime: '2025-08-25 11:30 AM', mapLink: 'https://maps.google.com/?q=28.6140,77.2091', status: 'In Process' },
+      { id: 3, userId: 1, location: 'Street 4, Industrial Area Phase 2', dateTime: '2025-08-24 04:00 PM', mapLink: 'https://maps.google.com/?q=28.6141,77.2092', status: 'Completed' },
+      { id: 4, userId: 2, location: 'Behind Green Valley School', dateTime: '2025-08-23 01:20 PM', mapLink: 'https://maps.google.com/?q=28.6142,77.2093', status: 'Pending' },
+      { id: 5, userId: 2, location: 'Lane 3, Riverfront Road', dateTime: '2025-08-22 08:00 AM', mapLink: 'https://maps.google.com/?q=28.6143,77.2094', status: 'Completed' }
+    ];
+
+    // --- DOM ELEMENT REFERENCES ---
+    const tableBody = document.getElementById('issues-table-body');
+    const tableTitle = document.getElementById('table-title');
+    const filterCards = document.querySelectorAll('.filter-card');
+    const municipalFilters = document.querySelectorAll('.municipal-filter');
+    const municipalReportsModal = document.getElementById('municipal-reports-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const municipalReportsTableBody = document.getElementById('municipal-reports-table-body');
+
+    // --- RENDER FUNCTIONS ---
+    function getStatusClass(status) {
+      if (status === 'Pending') return 'status-pending';
+      if (status === 'In Process') return 'status-in-process';
+      if (status === 'Completed') return 'status-completed';
+      return '';
+    }
+
+    function renderTable(filter = 'All') {
+      tableBody.innerHTML = '';
+      const filteredData = allIssuesData.filter(issue => filter === 'All' || issue.status === filter);
+      if (filteredData.length === 0) {
+        tableBody.innerHTML = <tr><td colspan="4" class="text-center py-10 text-gray-500">No reports found.</td></tr>;
+        return;
+      }
+      filteredData.forEach(issue => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${issue.location}</div></td>
+                    <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-700">${issue.dateTime}</div></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center"><a href="${issue.mapLink}" target="_blank" class="text-blue-600 hover:text-blue-800"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></a></td>
+                    <td class="px-6 py-4 whitespace-nowrap"><div class="status-badge ${getStatusClass(issue.status)}"><span class="status-dot"></span><span>${issue.status}</span></div></td>
+                `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function updateAllCounts() {
+      const pendingCount = allIssuesData.filter(i => i.status === 'Pending').length;
+      const inProcessCount = allIssuesData.filter(i => i.status === 'In Process').length;
+      const completedCount = allIssuesData.filter(i => i.status === 'Completed').length;
+
+      // Update top section
+      document.getElementById('total-pending-count').textContent = pendingCount;
+      document.getElementById('total-in-process-count').textContent = inProcessCount;
+      document.getElementById('total-completed-count').textContent = completedCount;
+
+      // Update public dashboard cards
+      document.getElementById('count-all').textContent = allIssuesData.length;
+      document.getElementById('count-pending').textContent = pendingCount;
+      document.getElementById('count-in-process').textContent = inProcessCount;
+      document.getElementById('count-completed').textContent = completedCount;
+    }
+
+    // --- EVENT LISTENERS ---
+    // Public filter cards
+    filterCards.forEach(card => {
+      card.addEventListener('click', () => {
+        filterCards.forEach(c => c.classList.remove('filter-card-active'));
+        card.classList.add('filter-card-active');
+        tableTitle.textContent = card.dataset.title;
+        renderTable(card.dataset.filter);
+      });
+    });
+
+    // Municipal filter summaries (to open modal)
+    municipalFilters.forEach(card => {
+      card.addEventListener('click', () => {
+        const filterType = card.dataset.filter;
+        const title = card.dataset.title;
+
+        modalTitle.textContent = title;
+        municipalReportsTableBody.innerHTML = ''; // Clear previous
+
+        const filteredReports = allIssuesData.filter(issue => issue.status === filterType);
+
+        if (filteredReports.length === 0) {
+          municipalReportsTableBody.innerHTML = <tr><td colspan="3" class="text-center py-10 text-gray-400">No reports with this status.</td></tr>;
+        } else {
+          filteredReports.forEach(issue => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                            <td class="py-3 px-4 text-sm">${issue.location}</td>
+                            <td class="py-3 px-4 text-sm">${issue.dateTime}</td>
+                            <td class="py-3 px-4"><div class="status-badge ${getStatusClass(issue.status)}"><span class="status-dot"></span><span>${issue.status}</span></div></td>
+                        `;
+            municipalReportsTableBody.appendChild(row);
+          });
+        }
+
+        municipalReportsModal.classList.remove('hidden');
+      });
+    });
+
+    // Close modal button
+    closeModalBtn.addEventListener('click', () => {
+      municipalReportsModal.classList.add('hidden');
+    });
+
+    // --- INITIALIZATION ---
+    function initializePage() {
+      updateAllCounts();
+      renderTable('All');
+    }
+
+    initializePage();
+  </script>
+
+</body>
+
+</html>

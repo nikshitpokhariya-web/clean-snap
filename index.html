@@ -4,12 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Clean City Initiative</title>
-  <!-- Tailwind CSS for styling -->
+  <title>Select Your Portal - Clean City Initiative</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* Applying the Inter font family to the body */
@@ -36,46 +34,17 @@
       bottom: 0;
       z-index: 0;
     }
-
-    /* Custom class to handle the trash image at the bottom */
-    .bottom-trash {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      /* Adjusted height for the new image */
-      background-image: url('');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center bottom;
-      opacity: 0.6;
-      /* Slightly adjusted opacity */
-      pointer-events: none;
-      /* Allows clicks to pass through */
-    }
-
-    /* Custom style for the selected role button */
-    .role-selected {
-      box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.5);
-      border-color: #26A69A;
-    }
   </style>
 </head>
 
 <body class="bg-custom-gradient">
 
   <div class="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
-    <!-- Ashoka Chakra Watermark -->
     <div class="ashoka-watermark"
       style="width: 80%; height: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 400px; max-height: 400px;">
     </div>
 
-    <!-- Trash image at the bottom -->
-    <div class="bottom-trash"></div>
-
     <div class="w-full max-w-sm z-10">
-      <!-- Logo -->
       <div class="flex justify-center mb-6">
         <div class="bg-[#26A69A] p-4 rounded-xl shadow-md">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -84,17 +53,14 @@
         </div>
       </div>
 
-      <!-- Heading and Subheading -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Login to Your Account</h1>
-        <p class="text-gray-600 mt-2">First, select your role below.</p>
+        <h1 class="text-3xl font-bold text-gray-800">Select Your Portal</h1>
+        <p class="text-gray-600 mt-2">Choose your role to proceed.</p>
       </div>
 
-      <!-- Login Options -->
       <div id="role-selection" class="space-y-4">
-        <!-- Citizen Button -->
         <button data-role="Citizen"
-          class="role-button w-full bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md flex items-center space-x-4 hover:bg-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-opacity-50">
+          class="role-button w-full bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md flex items-center space-x-4 hover:bg-white transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-opacity-50">
           <div class="text-[#26A69A]">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -103,9 +69,8 @@
           <span class="font-medium text-gray-700 text-lg">Citizen</span>
         </button>
 
-        <!-- NSS Member Button -->
         <button data-role="NSS Member"
-          class="role-button w-full bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md flex items-center space-x-4 hover:bg-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-opacity-50">
+          class="role-button w-full bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md flex items-center space-x-4 hover:bg-white transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-opacity-50">
           <div class="text-[#26A69A]">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
               <path
@@ -115,9 +80,8 @@
           <span class="font-medium text-gray-700 text-lg">NSS Member</span>
         </button>
 
-        <!-- Government Button -->
         <button data-role="Government"
-          class="role-button w-full bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md flex items-center space-x-4 hover:bg-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-opacity-50">
+          class="role-button w-full bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md flex items-center space-x-4 hover:bg-white transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-opacity-50">
           <div class="text-[#26A69A]">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
               <path
@@ -129,71 +93,32 @@
           <span class="font-medium text-gray-700 text-lg">Government</span>
         </button>
       </div>
-
-      <!-- Forgot Password -->
-      <div class="text-center mt-6">
-        <a href="#" class="text-gray-600 hover:text-gray-800 hover:underline">Forgot password?</a>
-      </div>
-
-      <!-- Sign In Button -->
-      <div class="mt-8">
-        <!-- UPDATED: Changed disabled:opacity-50 to disabled:bg-gray-400 for a clearer disabled state -->
-        <button id="signin-button"
-          class="w-full bg-[#26A69A] text-white py-4 rounded-xl shadow-lg hover:bg-[#208a7f] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#26A69A] focus:ring-offset-2 focus:ring-offset-gray-100 text-lg font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
-          disabled>
-          Sign In
-        </button>
-      </div>
-
-      <!-- Sign Up Link -->
-      <div class="text-center mt-6">
-        <p class="text-sm text-gray-600">
-          Don't have an account?
-          <a href="signup.html" class="font-medium text-[#26A69A] hover:underline">Sign Up</a>
-        </p>
-      </div>
     </div>
   </div>
 
   <script>
-    // Get references to the interactive elements
-    const roleButtons = document.querySelectorAll('.role-button');
-    const signinButton = document.getElementById('signin-button');
-
-    // Variable to store the currently selected role
-    let selectedRole = null;
-
-    // Add a click event listener to each role button
-    roleButtons.forEach(button => {
+    // Select all buttons with the class 'role-button'
+    document.querySelectorAll('.role-button').forEach(button => {
+      // Add a click event listener to each button
       button.addEventListener('click', () => {
-        // When a button is clicked, first remove the 'selected' style from all buttons
-        roleButtons.forEach(btn => btn.classList.remove('role-selected'));
+        // Get the specific role from the button's data attribute
+        const role = button.dataset.role;
 
-        // Then, add the 'selected' style to the clicked button
-        button.classList.add('role-selected');
-
-        // Store the role from the 'data-role' attribute
-        selectedRole = button.dataset.role;
-
-        // Enable the Sign In button now that a role has been selected
-        signinButton.disabled = false;
-        C
-        console.log('Role selected: ${ selectedRole }');
+        // Redirect based on the role
+        switch (role) {
+          case 'Citizen':
+            window.location.href = 'index2.html';
+            break;
+          case 'NSS Member':
+            window.location.href = 'index22.html';
+            break;
+          case 'Government':
+            window.location.href = 'index22.html';
+            break;
+          default:
+            console.log('Unknown role selected.');
+        }
       });
-    }); C
-
-    // Add a click event listener to the Sign In button
-    signinButton.addEventListener('click', () => {
-      // Check if a role has been selected before proceeding
-      if (selectedRole) {
-        // In a real application, this would trigger the authentication flow
-        console.log('Proceeding to sign in as: ${ selectedRole }');
-        // NOTE: Using a custom modal/message box is better than alert() in a real app.
-        // For this demonstration, we'll keep the console log.
-      } else {
-        // This case should not happen if the button is disabled correctly
-        console.log('No role selected.');
-      }
     });
   </script>
 
