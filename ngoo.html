@@ -4,78 +4,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Government Problem Dashboard</title>
+  <title>Citizen Problem Dashboard</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef3f9;
       margin: 0;
       padding: 0;
+      color: #333;
     }
 
     header {
-      background: #0047AB;
+      background: #2C3E50;
       color: white;
-      padding: 15px;
+      padding: 25px;
       text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .sub-header {
+      font-size: 16px;
+      margin: 5px 0;
+      font-weight: normal;
+      color: #ecf0f1;
     }
 
     .container {
-      width: 90%;
-      margin: 20px auto;
+      width: 95%;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
     }
 
     h2 {
-      color: #333;
+      margin-bottom: 20px;
+      color: #2C3E50;
+      font-size: 20px;
+      border-left: 6px solid #3498db;
+      padding-left: 10px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    table,
-    th,
-    td {
-      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     th {
-      background: #0047AB;
+      background: #3498db;
       color: white;
-      padding: 12px;
+      padding: 14px;
+      text-align: center;
+      font-size: 15px;
     }
 
     td {
-      padding: 10px;
+      padding: 12px;
       text-align: center;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    tr:nth-child(even) {
+      background: #f9fbfd;
+    }
+
+    tr:hover {
+      background: #f1f8ff;
     }
 
     select {
-      padding: 5px;
-      border-radius: 5px;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .status-label {
+      margin-top: 8px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 13px;
     }
 
     .status-pending {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 4px 8px;
-      border-radius: 4px;
+      background: #fce4e4;
+      color: #c0392b;
     }
 
     .status-progress {
-      background: #fff3cd;
-      color: #856404;
-      padding: 4px 8px;
-      border-radius: 4px;
+      background: #fff7e6;
+      color: #d35400;
     }
 
     .status-done {
-      background: #d4edda;
-      color: #155724;
-      padding: 4px 8px;
-      border-radius: 4px;
+      background: #eafaf1;
+      color: #27ae60;
     }
   </style>
 </head>
@@ -83,8 +115,8 @@
 <body>
 
   <header>
-    <h1>Government Citizen Problem Dashboard</h1>
-    <p>Municipality | NGO | Other Persons</p>
+    Government Citizen Problem Dashboard
+    <p class="sub-header">For Municipality & NGO</p>
   </header>
 
   <div class="container">
@@ -92,14 +124,14 @@
     <table>
       <tr>
         <th>Name</th>
-        <th>Location</th>
+        <th>Full Address</th>
         <th>Report</th>
         <th>Status</th>
       </tr>
 
       <tr>
         <td>Ravi Kumar</td>
-        <td>Delhi, India</td>
+        <td>Street 14, Near Metro Station, New Delhi</td>
         <td>Water leakage in pipeline</td>
         <td>
           <select onchange="updateStatus(this)">
@@ -113,7 +145,7 @@
 
       <tr>
         <td>Anita Sharma</td>
-        <td>Mumbai, India</td>
+        <td>Andheri East, Opp. Mall, Mumbai</td>
         <td>Street light not working</td>
         <td>
           <select onchange="updateStatus(this)">
@@ -127,7 +159,7 @@
 
       <tr>
         <td>Mohd. Faizan</td>
-        <td>Lucknow, India</td>
+        <td>Sector 12, Near School, Lucknow</td>
         <td>Garbage collection issue</td>
         <td>
           <select onchange="updateStatus(this)">
