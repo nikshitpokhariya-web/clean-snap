@@ -2,261 +2,197 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Snap & Location</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Trash Issue</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f8fb;
       margin: 0;
       padding: 0;
-      background: #f3f6fa;
       color: #333;
     }
 
     header {
-      background: #0066cc;
-      color: white;
+      background: #2c3e50;
+      color: #fff;
       text-align: center;
-      padding: 1rem;
-      font-size: 1.5rem;
+      padding: 20px;
+      font-size: 22px;
       font-weight: bold;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      letter-spacing: 1px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
 
-    main {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-    }
-
-    .card {
+    .container {
+      width: 95%;
+      max-width: 800px;
+      margin: 30px auto;
       background: white;
-      padding: 20px;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      margin-bottom: 20px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
 
     h2 {
+      color: #2c3e50;
+      font-size: 20px;
       margin-bottom: 15px;
-      color: #0066cc;
-      font-size: 1.3rem;
     }
 
-    video,
-    canvas,
-    img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    input,
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    button {
-      background: #0066cc;
+    .btn {
+      display: inline-block;
+      background: #3498db;
       color: white;
-      border: none;
-      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.3s;
+      margin-bottom: 15px;
     }
 
-    button:hover {
-      background: #004c99;
+    .btn:hover {
+      background: #2980b9;
+    }
+
+    .preview {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
     }
 
     #map {
       width: 100%;
-      height: 350px;
+      height: 300px;
       border-radius: 10px;
-      margin-top: 15px;
+      margin-top: 10px;
     }
 
-    #output {
-      background: #f9f9f9;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 0.9rem;
-      white-space: pre-wrap;
-      margin-top: 15px;
+    .submit-btn {
+      background: #27ae60;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      background: #1e8449;
     }
   </style>
 </head>
 
 <body>
-  <header>📸 Project Snap & Location</header>
-  <main>
-    <!-- Camera -->
-    <div class="card">
-      <h2>Take a Snap</h2>
-      <video id="video" autoplay playsinline></video>
-      <canvas id="canvas" style="display:none;"></canvas>
-      <img id="photoPreview" alt="Snapshot Preview" />
-      <button id="startCam">Start Camera</button>
-      <button id="snapBtn" disabled>Take Snapshot</button>
+  <header>Trash Report Portal</header>
+
+  <div class="container">
+    <!-- Snap Section -->
+    <div class="section">
+      <h2>1. Upload / Take a Photo</h2>
+      <input type="file" id="snapInput" accept="image/*" capture="environment" class="btn">
+      <img id="previewImg" class="preview" style="display:none;">
     </div>
 
-    <!-- Location -->
-    <div class="card">
-      <h2>Add Location</h2>
-      <input id="autocomplete" placeholder="Enter location manually..." />
-      <input id="address" placeholder="Street Address" readonly />
-      <input id="city" placeholder="City" readonly />
-      <input id="state" placeholder="State" readonly />
-      <input id="lat" placeholder="Latitude" readonly />
-      <input id="lon" placeholder="Longitude" readonly />
+    <!-- Location Section -->
+    <div class="section">
+      <h2>2. Select Location</h2>
+      <p><b>Option A:</b> Pin location on map</p>
       <div id="map"></div>
+
+      <p style="margin:15px 0;"><b>Option B:</b> Enter Address Manually</p>
+      <label>Street / Area</label>
+      <input type="text" id="street" placeholder="Enter street or area">
+      <label>City</label>
+      <input type="text" id="city" placeholder="Enter city">
+      <label>State</label>
+      <input type="text" id="state" placeholder="Enter state">
     </div>
 
     <!-- Submit -->
-    <div class="card">
-      <h2>Submit</h2>
-      <button id="submitBtn">Submit Info</button>
-      <div id="output"></div>
-    </div>
-  </main>
+    <button class="submit-btn" onclick="submitReport()">Submit Report</button>
+  </div>
 
   <script>
-    // --- Camera ---
-    const startCamBtn = document.getElementById("startCam");
-    const snapBtn = document.getElementById("snapBtn");
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
-    const photoPreview = document.getElementById("photoPreview");
-    let stream = null;
-
-    startCamBtn.onclick = async () => {
-      if (stream) {
-        stream.getTracks().forEach((t) => t.stop());
-        video.srcObject = null;
-        stream = null;
-        startCamBtn.textContent = "Start Camera";
-        snapBtn.disabled = true;
-        return;
+    // Preview image
+    document.getElementById('snapInput').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.getElementById('previewImg');
+          img.src = e.target.result;
+          img.style.display = "block";
+        }
+        reader.readAsDataURL(file);
       }
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        startCamBtn.textContent = "Stop Camera";
-        snapBtn.disabled = false;
-      } catch (e) {
-        alert("Camera error: " + e.message);
-      }
-    };
+    });
 
-    snapBtn.onclick = () => {
-      const w = video.videoWidth,
-        h = video.videoHeight;
-      canvas.width = w;
-      canvas.height = h;
-      canvas.getContext("2d").drawImage(video, 0, 0, w, h);
-      const dataUrl = canvas.toDataURL("image/jpeg");
-      photoPreview.src = dataUrl;
-    };
-
-    // --- Google Maps ---
-    let map, marker, autocomplete;
-    const latInput = document.getElementById("lat");
-    const lonInput = document.getElementById("lon");
-    const addrInput = document.getElementById("address");
-    const cityInput = document.getElementById("city");
-    const stateInput = document.getElementById("state");
-
-    function initAutocomplete() {
-      autocomplete = new google.maps.places.Autocomplete(
-        document.getElementById("autocomplete"),
-        { types: ["geocode"] }
-      );
-
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (!place.geometry) return;
-        const lat = place.geometry.location.lat();
-        const lon = place.geometry.location.lng();
-        latInput.value = lat;
-        lonInput.value = lon;
-        fillAddressFields(place);
-        setMap(lat, lon);
+    // Google Maps
+    let map, marker;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 28.6139, lng: 77.2090 }, // Default: New Delhi
+        zoom: 12,
       });
 
-      // Initialize Map
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 20.5937, lng: 78.9629 }, // India center
-        zoom: 5,
+      map.addListener("click", (e) => {
+        placeMarker(e.latLng);
       });
     }
 
-    function fillAddressFields(place) {
-      let addr = "",
-        city = "",
-        state = "";
-      if (place.address_components) {
-        place.address_components.forEach((c) => {
-          if (
-            c.types.includes("street_number") ||
-            c.types.includes("route")
-          )
-            addr += c.long_name + " ";
-          if (c.types.includes("locality")) city = c.long_name;
-          if (c.types.includes("administrative_area_level_1"))
-            state = c.long_name;
+    function placeMarker(location) {
+      if (marker) {
+        marker.setPosition(location);
+      } else {
+        marker = new google.maps.Marker({
+          position: location,
+          map: map,
         });
       }
-      addrInput.value = addr.trim();
-      cityInput.value = city;
-      stateInput.value = state;
     }
 
-    function setMap(lat, lon) {
-      map.setCenter({ lat: lat, lng: lon });
-      map.setZoom(15);
-      if (marker) marker.setMap(null);
-      marker = new google.maps.Marker({
-        position: { lat: lat, lng: lon },
-        map: map,
-        draggable: true,
-      });
-      marker.addListener("dragend", (e) => {
-        const newLat = e.latLng.lat(),
-          newLon = e.latLng.lng();
-        latInput.value = newLat;
-        lonInput.value = newLon;
-      });
-    }
+    // Submit function
+    function submitReport() {
+      let street = document.getElementById("street").value;
+      let city = document.getElementById("city").value;
+      let state = document.getElementById("state").value;
+      let address = `${street}, ${city}, ${state}`;
 
-    // --- Submit ---
-    document.getElementById("submitBtn").onclick = () => {
-      const data = {
-        photo: photoPreview.src || "No photo",
-        address: addrInput.value,
-        city: cityInput.value,
-        state: stateInput.value,
-        lat: latInput.value,
-        lon: lonInput.value,
-      };
-      document.getElementById("output").textContent = JSON.stringify(
-        data,
-        null,
-        2
-      );
-      alert("Information submitted!");
-    };
+      alert("Report Submitted!\nAddress: " + address);
+    }
   </script>
 
   <!-- Google Maps API -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&libraries=places&callback=initAutocomplete"
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJP1QuTGAXviURtuPv9yqFN9YU7Igyd2g&callback=initMap"
     async defer></script>
+
 </body>
 
 </html>
